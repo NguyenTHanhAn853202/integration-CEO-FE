@@ -1,0 +1,64 @@
+useEffect(() => {
+    for (let i = 0; i < 100; i++) {
+      (async () => {
+        const options = {
+          name: faker.person.jobTitle(),
+          value: faker.number.int(),
+          taxPercentage: Math.floor(Math.random() * 100) / 100,
+          type: Math.floor(Math.random() * 4),
+          amount: Math.floor(Math.random() * 100),
+        };
+        await sv.post("/payrate/create", options);
+      })();
+    }
+  }, []);
+
+   const l = async () => {
+      var employees = [
+        {
+          Employee_ID: 1,
+          First_Name: "John",
+          Last_Name: "Doe",
+          id: "65f854729ad04f14a52fa8aa",
+        },
+        {
+          Employee_ID: 2,
+          First_Name: "Jane",
+          Last_Name: "Smith",
+          id: "65f854729ad04f14a52fa8ac",
+        },
+        {
+          Employee_ID: 3,
+          First_Name: "Alice",
+          Last_Name: "Johnson",
+          id: "65f854729ad04f14a52fa8b0",
+        },
+        {
+          Employee_ID: 4,
+          First_Name: "Bob",
+          Last_Name: "Williams",
+          id: "65f854729ad04f14a52fa8b6",
+        },
+        {
+          Employee_ID: 5,
+          First_Name: "Eve",
+          Last_Name: "Brown",
+          id: "65f854729ad04f14a52fa8b4",
+        },
+      ];
+      for (let i = 0; i < employees.length; i++) {
+        const p = employees[i];
+        const m = faker.finance.amount();
+        await sv.postSip("/employee", {
+          employeeId: p.Employee_ID,
+          firstName: p.First_Name,
+          lastName: p.Last_Name,
+          vacationDays: Math.random() * 5 + 10,
+          paidToDate: m,
+          paidLastYear: m,
+          payRate: m - Math.random() * 10000000,
+          payRateId: Math.random() * 4 + 1,
+        });
+      }
+    };
+    l();
