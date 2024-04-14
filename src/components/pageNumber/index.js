@@ -7,6 +7,7 @@ const cx = classNames.bind(styles);
 
 function PageNumber({ currentPage = 1, setCurrentPage, count = 0, limit = 5 }) {
   const maxPage = Math.ceil(count / limit);
+  // const maxPage = Math.max(1000);
   const handleIncrement = () => {
     if (currentPage < maxPage) {
       setCurrentPage(currentPage + 1);

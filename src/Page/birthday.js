@@ -1,35 +1,25 @@
 import { useEffect, useState } from "react";
-import { get, post } from "../api";
-
 import PageNumber from "../components/pageNumber";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { get } from "../api";
 
-function Personal() {
+function Birthday() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const limit = 5;
-  const navigate = useNavigate();
-  const handleDelete = async (item) => {
-    await post("/employee/delete", {
-      employeeId: item.employeeId,
-      id: item.idDepartment,
-    });
-    setData((state) => state.filter((e) => e.employeeId != item.employeeId));
-    toast.success("Xóa thành công!");
-  };
+
   useEffect(() => {
     (async () => {
-      const data = await get("/employee", { limit: limit, page: currentPage });
-      // console.log(data);
+      const data = await get("/employee/birthday", {
+        limit: limit,
+        page: currentPage,
+      });
       setData(data.data);
       setMaxPage(data.amount);
     })();
-  }, [currentPage, JSON.stringify(data)]);
+  }, [currentPage]);
   return (
     <>
-      <ToastContainer />
       <div class="module">
         <div class="module-head">
           <h3>Personals - @Html.ActionLink("Create New", "Create")</h3>
@@ -47,36 +37,33 @@ function Personal() {
                 <th>Full Name</th>
                 <th>Gender</th>
                 <th>Ethnicity</th>
-                <th>PaidToDate</th>
-                <th>PaidLastYear</th>
-                <th>Status</th>
+                <th>Birthday</th>
                 <th>Department</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {data.map((item, index) => {
+                const date = new Date(item.birthday);
+                const birthday = `${
+                  date.getDate().toString().length == 1
+                    ? "0" + date.getDate()
+                    : date.getDate()
+                }/${
+                  (date.getMonth() + 1).toString().length == 1
+                    ? "0" + (date.getMonth() + 1)
+                    : date.getMonth() + 1
+                }/${date.getFullYear()}`;
                 return (
                   <tr key={index} class="odd gradeX">
                     <td>{item.fullName}</td>
                     <td>{item.gender ? "Nam" : "Nữ"}</td>
                     <td>{item.ethnicity}</td>
-                    <td>{item.paidToDay}</td>
-                    <td class="center">{item.paidLastYear}</td>
-                    <td class="center">{item.status}</td>
+
+                    <td class="center">{birthday}</td>
                     <td class="center">{item.department}</td>
-                    <td>
-                      {" "}
-                      <button
-                        onClick={() =>
-                          navigate("/edit-employee", { state: { data: item } })
-                        }
-                      >
-                        Edit
-                      </button>{" "}
-                      |{" "}
-                      <button onClick={() => handleDelete(item)}>Delete</button>
-                    </td>
+
+                    <td></td>
                   </tr>
                 );
               })}
@@ -94,4 +81,4 @@ function Personal() {
   );
 }
 
-export default Personal;
+export default Birthday;

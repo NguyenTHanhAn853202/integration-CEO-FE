@@ -1,32 +1,36 @@
 import { useEffect, useState } from "react";
-import { get, post } from "../api";
-
+import * as sv from "../api/index";
 import PageNumber from "../components/pageNumber";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-function Personal() {
+function VocationDay() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const limit = 5;
   const navigate = useNavigate();
   const handleDelete = async (item) => {
-    await post("/employee/delete", {
+    await sv.post("/employee/delete", {
       employeeId: item.employeeId,
       id: item.idDepartment,
     });
     setData((state) => state.filter((e) => e.employeeId != item.employeeId));
     toast.success("Xóa thành công!");
   };
+
   useEffect(() => {
     (async () => {
-      const data = await get("/employee", { limit: limit, page: currentPage });
-      // console.log(data);
+      const data = await sv.get("/employee/vocation-days", {
+        limit: limit,
+        page: currentPage,
+      });
+
       setData(data.data);
       setMaxPage(data.amount);
     })();
   }, [currentPage, JSON.stringify(data)]);
+
   return (
     <>
       <ToastContainer />
@@ -44,13 +48,14 @@ function Personal() {
           >
             <thead>
               <tr>
+                <th>ShareHolder</th>
                 <th>Full Name</th>
                 <th>Gender</th>
                 <th>Ethnicity</th>
-                <th>PaidToDate</th>
-                <th>PaidLastYear</th>
+
                 <th>Status</th>
                 <th>Department</th>
+                <th>VocationDays</th>
                 <th></th>
               </tr>
             </thead>
@@ -58,18 +63,22 @@ function Personal() {
               {data.map((item, index) => {
                 return (
                   <tr key={index} class="odd gradeX">
+                    <td>{item.shareHolder ? "Yes" : "No"}</td>
                     <td>{item.fullName}</td>
                     <td>{item.gender ? "Nam" : "Nữ"}</td>
                     <td>{item.ethnicity}</td>
-                    <td>{item.paidToDay}</td>
-                    <td class="center">{item.paidLastYear}</td>
+
                     <td class="center">{item.status}</td>
                     <td class="center">{item.department}</td>
+                    <td style={{ textAlign: "center" }}>
+                      {Math.ceil(item.vacationDays)}
+                    </td>
                     <td>
-                      {" "}
                       <button
                         onClick={() =>
-                          navigate("/edit-employee", { state: { data: item } })
+                          navigate("/edit-employee", {
+                            state: { data: item, navigate: "/vocation-day" },
+                          })
                         }
                       >
                         Edit
@@ -94,4 +103,4 @@ function Personal() {
   );
 }
 
-export default Personal;
+export default VocationDay;

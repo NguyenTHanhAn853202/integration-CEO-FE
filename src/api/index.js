@@ -1,43 +1,21 @@
 import axios from "axios";
 
-const sipApp = axios.create({
-  baseURL: "http://localhost:4000/api",
+const endPoint = axios.create({
+  baseURL: "http://localhost:9090/api",
 });
 
-const getSip = async (url, options = {}) => {
+export const get = async (url, option) => {
   try {
-    return await sipApp.get(url, { params: options });
+    return (await endPoint.get(url, { params: option })).data;
   } catch (error) {
-    alert(error.message);
+    console.log(error.message);
   }
 };
 
-const postSip = async (url, options = {}) => {
+export const post = async (url, option) => {
   try {
-    return await sipApp.post(url, options);
+    return (await endPoint.post(url, option)).data;
   } catch (error) {
-    alert(error.message);
+    console.log(error.message);
   }
 };
-
-const HR = axios.create({
-  baseURL: "http://localhost:19335/api",
-});
-
-const getHR = async (url, options = {}) => {
-  try {
-    return await HR.get(url, { params: options });
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-const postHR = async (url, options = {}) => {
-  try {
-    return await HR.post(url, options);
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-export { getHR, postHR, getSip, postSip };

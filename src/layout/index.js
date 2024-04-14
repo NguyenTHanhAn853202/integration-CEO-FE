@@ -85,18 +85,43 @@ function Layout() {
                   </li>
                   <li>
                     <Link to="/persionals">
-                      <i class="menu-icon icon-bullhorn"></i>Personal List{" "}
+                      <i class="menu-icon icon-bullhorn"></i> INFO{" "}
                     </Link>
                   </li>
-                  <li>
+                  <li class="active">
+                    <Link to="/vocation-day">
+                      <i class="menu-icon icon-dashboard"></i> Vocation Days
+                    </Link>
+                  </li>
+                  {/* <li>
                     <Link to="/benifit">
                       {" "}
                       <i class="menu-icon icon-tasks"></i>Benefit Plans
                     </Link>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <Link to="/joblist">
                       <i class="menu-icon icon-inbox"></i>Job History
+                    </Link>
+                  </li> */}
+                  <li>
+                    <Link to="/average-paid">
+                      <i class="menu-icon icon-inbox"></i>Average Paid
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/create-personal">
+                      <i class="menu-icon icon-inbox"></i>Create employee
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/birthday">
+                      <i class="menu-icon icon-inbox"></i>Birthday
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/hire-day">
+                      <i class="menu-icon icon-inbox"></i>Hire day
                     </Link>
                   </li>
                 </ul>
