@@ -11,7 +11,7 @@ function VocationDay() {
   const limit = 5;
   const navigate = useNavigate();
   const handleDelete = async (item) => {
-    await sv.post("/employee/delete", {
+    await sv.post("/employees/delete", {
       employeeId: item.employeeId,
       id: item.idDepartment,
     });
@@ -21,7 +21,7 @@ function VocationDay() {
 
   useEffect(() => {
     (async () => {
-      const data = await sv.get("/employee/vocation-days", {
+      const data = await sv.get("/employees/vocation-days", {
         limit: limit,
         page: currentPage,
       });

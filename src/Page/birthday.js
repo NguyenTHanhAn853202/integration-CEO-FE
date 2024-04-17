@@ -10,7 +10,7 @@ function Birthday() {
 
   useEffect(() => {
     (async () => {
-      const data = await get("/employee/birthday", {
+      const data = await get("/employees/birthday", {
         limit: limit,
         page: currentPage,
       });

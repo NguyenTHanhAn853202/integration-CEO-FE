@@ -19,7 +19,7 @@ function HireDay() {
 
   useEffect(() => {
     (async () => {
-      const data = await get("/employee/hire-day");
+      const data = await get("/employees/hire-day");
       setStore(data);
       setMaxPage(data.length);
     })();

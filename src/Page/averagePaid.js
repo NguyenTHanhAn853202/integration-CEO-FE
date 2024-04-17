@@ -19,7 +19,7 @@ function AveragePaid() {
 
   useEffect(() => {
     (async () => {
-      const data = await sv.get("/employee/average-plan", {
+      const data = await sv.get("/employees/average-plan", {
         limit: limit,
         page: currentPage,
       });

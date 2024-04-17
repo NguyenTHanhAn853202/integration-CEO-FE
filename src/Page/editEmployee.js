@@ -34,12 +34,13 @@ function EditEmployee() {
   const data = location.state?.data;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const reponse = await post("/employee/edit", state);
+    const reponse = await post("/employees/edit", state);
     navigate(location.state?.navigate || "/persionals");
   };
 
   const [birthday, setBirthday] = useState("");
   const [hireDate, sethireDate] = useState("");
+  console.log(state);
 
   useEffect(() => {
     dispatch({ key: ALL, value: data });
@@ -254,7 +255,11 @@ function EditEmployee() {
                   Department
                 </label>
                 <div class="controls">
-                  <input disabled placeholder="ID" value={state.department.ID} />
+                  <input
+                    disabled
+                    placeholder="ID"
+                    value={state.department.ID}
+                  />
                   <input
                     onChange={(e) => {
                       dispatch({
@@ -331,7 +336,7 @@ function EditEmployee() {
                 </label>
                 <div class="controls">
                   <select
-                    value={state.benifitPlan?.Benefit_Plan_ID}
+                    value={state.benifitPlan}
                     onChange={(e) =>
                       dispatch({ key: BENIFITPLAN, value: e.target.value * 1 })
                     }

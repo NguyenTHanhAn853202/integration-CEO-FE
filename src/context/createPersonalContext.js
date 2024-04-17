@@ -27,7 +27,9 @@ export const initState = {
   paidLastYear: 0,
   status: "Full time",
   ethnicity: "",
-  department: {},
+  department: {
+    Benefit_Plan_ID: "",
+  },
   birthday: "",
   hireDate: "",
   vocationDays: 0,

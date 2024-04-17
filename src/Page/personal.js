@@ -12,7 +12,7 @@ function Personal() {
   const limit = 5;
   const navigate = useNavigate();
   const handleDelete = async (item) => {
-    await post("/employee/delete", {
+    await post("/employees/delete", {
       employeeId: item.employeeId,
       id: item.idDepartment,
     });
@@ -21,7 +21,7 @@ function Personal() {
   };
   useEffect(() => {
     (async () => {
-      const data = await get("/employee", { limit: limit, page: currentPage });
+      const data = await get("/employees", { limit: limit, page: currentPage });
       // console.log(data);
       setData(data.data);
       setMaxPage(data.amount);

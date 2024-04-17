@@ -31,7 +31,7 @@ function CreatePersonal() {
   const [data, setData] = useState([]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await post("/further/create-personal", {
+    const data = await post("/employees/create", {
       ...state,
     });
     if (data.success) {
@@ -57,7 +57,7 @@ function CreatePersonal() {
       "Pacific Islander",
       // Thêm các dân tộc khác tùy thuộc vào nhu cầu
     ];
-
+    
     // Chọn ngẫu nhiên một dân tộc từ danh sách
 
     for (let i = 5; i < 600; i++) {
@@ -87,6 +87,7 @@ function CreatePersonal() {
       });
     }
   };
+  console.log(state);
 
   return (
     <>
