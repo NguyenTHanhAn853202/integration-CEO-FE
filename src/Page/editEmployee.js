@@ -25,6 +25,7 @@ import {
   reducer,
 } from "../context/createPersonalContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import { edit } from "../socket";
 
 function EditEmployee() {
   const [state, dispatch] = useReducer(reducer, initState);
@@ -35,6 +36,7 @@ function EditEmployee() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const reponse = await post("/employees/edit", state);
+    edit();
     navigate(location.state?.navigate || "/persionals");
   };
 

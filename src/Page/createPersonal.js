@@ -25,6 +25,8 @@ import {
   SHAREHOLDER,
 } from "../context/createPersonalContext";
 import { ToastContainer, toast } from "react-toastify";
+import { connect, io } from "socket.io-client";
+import { create, hello } from "../socket";
 
 function CreatePersonal() {
   const [state, dispatch] = useReducer(reducer, initState);
@@ -38,12 +40,17 @@ function CreatePersonal() {
       dispatch({ key: CLEAR });
       toast.success("Tạo mới thành công");
     }
-    // console.log(data);
+
+    create();
+    // hello();
   };
   useEffect(() => {
     (async () => {
       const data = await get("/further/benifit-plan");
       setData(data || []);
+      if (data.length > 0) {
+        dispatch({ key: BENIFITPLAN, value: data[0].Benefit_Plan_ID });
+      }
     })();
   }, []);
 
@@ -57,7 +64,7 @@ function CreatePersonal() {
       "Pacific Islander",
       // Thêm các dân tộc khác tùy thuộc vào nhu cầu
     ];
-    
+
     // Chọn ngẫu nhiên một dân tộc từ danh sách
 
     for (let i = 5; i < 600; i++) {

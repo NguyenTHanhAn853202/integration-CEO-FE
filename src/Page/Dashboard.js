@@ -4,35 +4,108 @@ import axios from "axios";
 import styles from "../styles/dashboard.module.scss";
 import { useEffect, useState } from "react";
 import * as db from "../api";
+import { FaFemale, FaUser } from "react-icons/fa";
+import { FaMale } from "react-icons/fa";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const cx = classNames.bind(styles);
+const labels = ["Female", "Male", "Shareholder", "Employment Status"];
 
 function Dashboard() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
+  const [employees, setEmployees] = useState([]);
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Thống kê",
+      },
+    },
+  };
+
+  const dataChart = {
+    labels,
+    datasets: [
+      {
+        label: "Female",
+        data: [data.female, data.male, data.shareHolder, data.employmentStatus],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(243, 241, 23, 0.8)",
+          "rgba(153, 102, 255, 0.8)",
+          "rgba(153, 250, 233, 0.8)",
+        ],
+      },
+    ],
+  };
 
   useEffect(() => {
     (async () => {
-
+      const {
+        data = [],
+        amount = 0,
+        female = 0,
+        male = 0,
+        shareHolder = 0,
+        employmentStatus = 0,
+      } = await db.get("/dashboard");
+      setData({ data, amount, female, male, shareHolder, employmentStatus });
+      setEmployees(() => {
+        const item = [];
+        for (let index = 0; index < 20; index++) {
+          item.push(data[index]);
+        }
+        return item;
+      });
     })();
-  },[]);
+  }, []);
   return (
     <div class="content">
       <div class="btn-controls">
         <div class="btn-box-row row-fluid">
           <a href="#" class="btn-box big span4">
-            <i class=" icon-random"></i>
-            <b>65%</b>
-            <p class="text-muted">Growth</p>
+            <span style={{ fontSize: "30px" }}>
+              <FaUser />
+            </span>
+            <b>{data?.amount}</b>
+            <p class="text-muted">USER</p>
           </a>
           <a href="#" class="btn-box big span4">
-            <i class="icon-user"></i>
-            <b>15</b>
-            <p class="text-muted">New Users</p>
+            <span style={{ fontSize: "30px" }}>
+              <FaFemale />
+            </span>
+            <b>{data?.female}</b>
+            <p class="text-muted">FEMALE</p>
           </a>
           <a href="#" class="btn-box big span4">
-            <i class="icon-money"></i>
-            <b>15,152</b>
-            <p class="text-muted">Profit</p>
+            <span style={{ fontSize: "30px" }}>
+              <FaMale />
+            </span>
+            <b>{data?.male}</b>
+            <p class="text-muted">MALE</p>
           </a>
         </div>
         <div class="btn-box-row row-fluid">
@@ -73,38 +146,70 @@ function Dashboard() {
           <ul class="widget widget-usage unstyled span4">
             <li>
               <p>
-                <strong>Windows 8</strong>{" "}
-                <span class="pull-right small muted">78%</span>
+                <strong>Male</strong>{" "}
+                <span class="pull-right small muted">
+                  {Math.ceil((data?.male / data?.amount) * 100)}%
+                </span>
               </p>
               <div class="progress tight">
-                <div class="bar" style={{ width: "78%" }}></div>
+                <div
+                  class="bar"
+                  style={{
+                    width: `${Math.ceil((data?.male / data?.amount) * 100)}%`,
+                  }}
+                ></div>
               </div>
             </li>
             <li>
               <p>
-                <strong>Mac</strong>{" "}
-                <span class="pull-right small muted">56%</span>
+                <strong>Female</strong>{" "}
+                <span class="pull-right small muted">
+                  {Math.ceil((data?.female / data?.amount) * 100)}
+                </span>
               </p>
               <div class="progress tight">
-                <div class="bar bar-success" style={{ width: "56%" }}></div>
+                <div
+                  class="bar bar-success"
+                  style={{
+                    width: `${Math.ceil((data?.female / data?.amount) * 100)}%`,
+                  }}
+                ></div>
               </div>
             </li>
             <li>
               <p>
-                <strong>Linux</strong>{" "}
-                <span class="pull-right small muted">44%</span>
+                <strong>shareholder</strong>{" "}
+                <span class="pull-right small muted">
+                  {Math.ceil((data?.shareHolder / data?.amount) * 100)}%
+                </span>
               </p>
               <div class="progress tight">
-                <div class="bar bar-warning" style={{ width: "44%" }}></div>
+                <div
+                  class="bar bar-warning"
+                  style={{
+                    width: `${Math.ceil(
+                      (data?.shareHolder / data?.amount) * 100
+                    )}%`,
+                  }}
+                ></div>
               </div>
             </li>
             <li>
               <p>
-                <strong>iPhone</strong>{" "}
-                <span class="pull-right small muted">67%</span>
+                <strong>Employment Status</strong>{" "}
+                <span class="pull-right small muted">
+                  {Math.ceil((data?.employmentStatus / data?.amount) * 100)}%
+                </span>
               </p>
               <div class="progress tight">
-                <div class="bar bar-danger" style={{ width: "67%" }}></div>
+                <div
+                  class="bar bar-danger"
+                  style={{
+                    width: `${Math.ceil(
+                      (data?.employmentStatus / data?.amount) * 100
+                    )}%`,
+                  }}
+                ></div>
               </div>
             </li>
           </ul>
@@ -116,14 +221,7 @@ function Dashboard() {
           <h3>Profit Chart</h3>
         </div>
         <div class="module-body">
-          <div class="chart inline-legend grid">
-            {/* <div></div> */}
-            <img
-              id="placeholder2"
-              className={cx("chart-dashboard", { graph: true })}
-              src={charImg}
-            />
-          </div>
+          <Bar options={options} data={dataChart} />
         </div>
       </div>
 
@@ -158,15 +256,28 @@ function Dashboard() {
           >
             <thead>
               <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
-                <th>Engine version</th>
-                <th>CSS grade</th>
+                <th>E_ID</th>
+                <th>Full name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>birthDay</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="odd gradeX">
+              {employees.map((employee) => (
+                <tr class="odd gradeX">
+                  <td>{employee.employeeId}</td>
+                  <td>{employee.firstName + " " + employee.lastName}</td>
+                  <td>{employee.Email}</td>
+                  <td class="center">{employee.Address1}</td>
+                  <td class="center">{`${new Date(
+                    employee.birthDay
+                  ).getDate()}/${
+                    new Date(employee.birthDay).getMonth() + 1
+                  }/${new Date(employee.birthDay).getFullYear()}`}</td>
+                </tr>
+              ))}
+              {/* <tr class="odd gradeX">
                 <td>Trident</td>
                 <td>Internet Explorer 4.0</td>
                 <td>Win 95+</td>
@@ -566,9 +677,9 @@ function Dashboard() {
                 <td>-</td>
                 <td class="center">-</td>
                 <td class="center">U</td>
-              </tr>
+              </tr> */}
             </tbody>
-            <tfoot>
+            {/* <tfoot>
               <tr>
                 <th>Rendering engine</th>
                 <th>Browser</th>
@@ -576,7 +687,7 @@ function Dashboard() {
                 <th>Engine version</th>
                 <th>CSS grade</th>
               </tr>
-            </tfoot>
+            </tfoot> */}
           </table>
         </div>
       </div>

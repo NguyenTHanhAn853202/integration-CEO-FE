@@ -4,20 +4,23 @@ import { get, post } from "../api";
 import PageNumber from "../components/pageNumber";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { remove } from "../socket";
 
 function Personal() {
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(119);
   const [maxPage, setMaxPage] = useState(1);
   const limit = 5;
   const navigate = useNavigate();
   const handleDelete = async (item) => {
+    if (!window.confirm("Are you sure you want to delete")) return;
     await post("/employees/delete", {
       employeeId: item.employeeId,
       id: item.idDepartment,
     });
     setData((state) => state.filter((e) => e.employeeId != item.employeeId));
     toast.success("Xóa thành công!");
+    remove();
   };
   useEffect(() => {
     (async () => {

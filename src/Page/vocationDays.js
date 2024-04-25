@@ -3,6 +3,7 @@ import * as sv from "../api/index";
 import PageNumber from "../components/pageNumber";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { remove } from "../socket";
 
 function VocationDay() {
   const [data, setData] = useState([]);
@@ -17,6 +18,7 @@ function VocationDay() {
     });
     setData((state) => state.filter((e) => e.employeeId != item.employeeId));
     toast.success("Xóa thành công!");
+    remove();
   };
 
   useEffect(() => {
