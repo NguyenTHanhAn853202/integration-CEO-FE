@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const endPoint = axios.create({
-  baseURL: "http://localhost:9090/api",
+  baseURL: "http://localhost:9098/api",
 });
 
 export const get = async (url, option) => {

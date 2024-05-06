@@ -96,6 +96,21 @@ function CreatePersonal() {
   };
   console.log(state);
 
+  const [today, setToday] = useState("");
+
+  useEffect(() => {
+    var ngayHienTai = new Date();
+
+    // Format ngày hiện tại thành yyyy-MM-dd
+    var dd = String(ngayHienTai.getDate()).padStart(2, "0");
+    var mm = String(ngayHienTai.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0
+    var yyyy = ngayHienTai.getFullYear();
+
+    var homNay = yyyy + "-" + mm + "-" + dd;
+    setToday(homNay);
+  }, []);
+  console.log(today);
+
   return (
     <>
       <ToastContainer />
@@ -341,6 +356,7 @@ function CreatePersonal() {
                       dispatch({ key: BIRTHDAY, value: e.target.value });
                     }}
                     type="date"
+                    max={today}
                   />
                 </div>
               </div>
@@ -354,6 +370,7 @@ function CreatePersonal() {
                       dispatch({ key: HIREDATE, value: e.target.value });
                     }}
                     type="date"
+                    max={today}
                   />
                 </div>
               </div>
